@@ -331,6 +331,20 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                         });
                     }
                     //##min and max validation for number end
+                    //** check box required validation start
+                    if (this.isRequired && this.controlType == control_types_1.ControlTypes.CHECKBOX) {
+                        this.customvalidators.push({
+                            validationKey: 'required',
+                            validationMessage: this.requiredMessage,
+                            validationFn: function (val) {
+                                if (!val) {
+                                    return false;
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                    //## check box required validation end
                     if (this.pattern) {
                         validatorsList.push(forms_1.Validators.pattern(this.pattern));
                     }

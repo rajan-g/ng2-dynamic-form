@@ -1,5 +1,6 @@
 export class ControlTypes {
     static TEXTBOX = "textbox";
+    static EMAIL = "email";
     static NUMBER = "number";
     static CHECKBOX = "checkbox";
     static DATE = "date";

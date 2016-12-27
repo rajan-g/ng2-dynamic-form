@@ -16,9 +16,11 @@ import { FormStyles } from '../control-meta/FormStyles';
     <form [formGroup]="dynaForm" [ngClass]="{'form-inline': !formData.formStyle || formData.formStyle ==='bootstrap_inline', 'form-horizontal' : formData.formStyle ==='bootstrap_horizontal' }">
             <div *ngFor="let control of formData.controls" [ngSwitch]="control.controlType">
                <text-box *ngSwitchCase="'textbox'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos" [util]="util" [dataObject]="formData.dataObject"></text-box>
+               <email-ctl *ngSwitchCase="'email'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos" [util]="util" [dataObject]="formData.dataObject"></email-ctl>
                <number-box *ngSwitchCase="'number'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos"  [util]="util" [dataObject]="formData.dataObject"></number-box>
                <check-box *ngSwitchCase="'checkbox'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos"  [util]="util" [dataObject]="formData.dataObject"></check-box>
                <radio-ctl *ngSwitchCase="'radio'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos"  [util]="util" [dataObject]="formData.dataObject"></radio-ctl>
+               <select-ctl *ngSwitchCase="'select'" [controlmeta]="control" [dynaForm] ="dynaForm" [utilInfos]="utilInfos"  [util]="util" [dataObject]="formData.dataObject"></select-ctl>
             </div>
         <div class="form-group" *ngIf="formData.formStyle ==='bootstrap_vertical' ">
             <button (click)="sendResult()" class="btn btn-primary" >Submit</button>

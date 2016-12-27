@@ -36,6 +36,11 @@ export class CheckBoxControl extends BaseControl implements OnInit {
     ngOnInit() {
         this.checkedValue = this.controlMeta['checkedValue'];
         this.unCheckedValue = this.controlMeta['unCheckedValue '];
+        if(this.dataObject[this.controlMeta['valueProperty']] == this.controlMeta['checkedValue']) {
+            this.dataObject[this.controlMeta['valueProperty']] = true;
+        }else {
+            this.dataObject[this.controlMeta['valueProperty']] = false;
+        }
         this.init(this.controlMeta, this.util, this.dataObject);
         this.dataObject[this.valueProperty] = this.dataObject[this.valueProperty] || false;
     }

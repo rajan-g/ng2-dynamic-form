@@ -249,6 +249,20 @@ export abstract class BaseControl {
             });
         }
         //##min and max validation for number end
+        //** check box required validation start
+        if (this.isRequired && this.controlType == ControlTypes.CHECKBOX) {
+        this.customvalidators.push({
+                validationKey: 'required',
+                validationMessage: this.requiredMessage,
+                validationFn: (val: string) => {
+                    if (!val) {
+                        return false
+                    }
+                    return true;
+                }
+            })
+        }
+        //## check box required validation end
         if (this.pattern) {
             validatorsList.push(Validators.pattern(this.pattern));
         }

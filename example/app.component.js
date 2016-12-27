@@ -29,7 +29,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.data = new Object({ firstName: 'Rajan', active: 'active' });
+                    this.data = new Object({ firstName: 'Rajan', active: 'inactive' });
                     this.controls = [
                         {
                             label: 'First name',
@@ -68,10 +68,8 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                         {
                             label: 'Email',
                             valueProperty: 'Email',
-                            controlType: control_types_1.ControlTypes.TEXTBOX,
-                            isRequired: true,
-                            minlength: 4,
-                            maxLength: 10,
+                            controlType: control_types_1.ControlTypes.EMAIL,
+                            isRequired: true
                         },
                         {
                             label: 'Age',
@@ -94,7 +92,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                             label: 'isActive',
                             valueProperty: 'active',
                             controlType: control_types_1.ControlTypes.CHECKBOX,
-                            isRequired: false,
+                            isRequired: true,
                             checkedValue: 'active',
                             unCheckedValue: 'inactive'
                         },
@@ -104,6 +102,21 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                             controlType: control_types_1.ControlTypes.RADIO,
                             isRequired: true,
                             options: [{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]
+                        },
+                        {
+                            label: 'Role',
+                            valueProperty: 'role',
+                            controlType: control_types_1.ControlTypes.SELECT_DROPDOWN,
+                            isRequired: true,
+                            defaultSelectMessage: '--Select Role--',
+                            optionValueProperty: 'parent.id',
+                            optionDisplayProperty: 'name',
+                            options: [
+                                { name: 'Admin', parent: { id: '1' } },
+                                { name: 'Manager', parent: { id: '2' } },
+                                { name: 'Delivery Head', parent: { id: '3' } },
+                                { name: 'Software Engineer', parent: { id: '4' } }
+                            ]
                         }
                     ];
                     //            this.fromData = new FromData('sampleform', this.controls, this.data, (formData:any) => {

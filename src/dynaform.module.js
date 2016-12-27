@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './controls-components/dynamic-form-component', './controls-components/text-control', './controls-components/number-control', './controls-components/checkbox-control', './controls-components/radio-control', './controls-components/validation-messages-block'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './controls-components/dynamic-form-component', './controls-components/text-control', './controls-components/number-control', './controls-components/checkbox-control', './controls-components/radio-control', './controls-components/email-control', './controls-components/select-control', './controls-components/validation-messages-block'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, forms_1, dynamic_form_component_1, text_control_1, number_control_1, checkbox_control_1, radio_control_1, validation_messages_block_1;
+    var core_1, platform_browser_1, forms_1, dynamic_form_component_1, text_control_1, number_control_1, checkbox_control_1, radio_control_1, email_control_1, select_control_1, validation_messages_block_1;
     var DynaFormModule;
     return {
         setters:[
@@ -38,6 +38,12 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
             function (radio_control_1_1) {
                 radio_control_1 = radio_control_1_1;
             },
+            function (email_control_1_1) {
+                email_control_1 = email_control_1_1;
+            },
+            function (select_control_1_1) {
+                select_control_1 = select_control_1_1;
+            },
             function (validation_messages_block_1_1) {
                 validation_messages_block_1 = validation_messages_block_1_1;
             }],
@@ -49,8 +55,16 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
                 DynaFormModule = __decorate([
                     core_1.NgModule({
                         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, forms_1.ReactiveFormsModule],
-                        declarations: [dynamic_form_component_1.DynaFormComponent, text_control_1.TextControl, number_control_1.NumberControl, checkbox_control_1.CheckBoxControl, radio_control_1.RadioControl, validation_messages_block_1.DynaValidationBlock],
-                        exports: [dynamic_form_component_1.DynaFormComponent, text_control_1.TextControl, number_control_1.NumberControl, checkbox_control_1.CheckBoxControl, radio_control_1.RadioControl, validation_messages_block_1.DynaValidationBlock],
+                        declarations: [dynamic_form_component_1.DynaFormComponent, text_control_1.TextControl,
+                            number_control_1.NumberControl, checkbox_control_1.CheckBoxControl,
+                            radio_control_1.RadioControl, email_control_1.EmailControl,
+                            select_control_1.SelectControl,
+                            validation_messages_block_1.DynaValidationBlock],
+                        exports: [dynamic_form_component_1.DynaFormComponent, text_control_1.TextControl,
+                            number_control_1.NumberControl, checkbox_control_1.CheckBoxControl,
+                            radio_control_1.RadioControl, email_control_1.EmailControl,
+                            select_control_1.SelectControl,
+                            validation_messages_block_1.DynaValidationBlock],
                     }), 
                     __metadata('design:paramtypes', [])
                 ], DynaFormModule);

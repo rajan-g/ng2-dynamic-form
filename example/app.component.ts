@@ -17,7 +17,7 @@ import { ControlTypes } from '../src/control-meta/control-types';
 })
 export class AppComponent {
     fromData: FromData;
-    data: any = new Object({ firstName: 'Rajan', active:'active' });
+    data: any = new Object({ firstName: 'Rajan', active:'inactive' });
     controls: Array<any> = [
         {
             label: 'First name',
@@ -57,10 +57,8 @@ export class AppComponent {
         {
             label: 'Email',
             valueProperty: 'Email',
-            controlType: ControlTypes.TEXTBOX,
-            isRequired: true,
-            minlength: 4,
-            maxLength: 10,
+            controlType: ControlTypes.EMAIL,
+            isRequired: true
         },
         {
             label: 'Age',
@@ -85,7 +83,7 @@ export class AppComponent {
             label: 'isActive',
             valueProperty: 'active',
             controlType: ControlTypes.CHECKBOX,
-            isRequired: false,
+            isRequired: true,
             checkedValue: 'active',
             unCheckedValue: 'inactive'
         },
@@ -95,6 +93,21 @@ export class AppComponent {
             controlType: ControlTypes.RADIO,
             isRequired: true,
             options: [{label: 'Male', value:'male'}, {label: 'Female', value:'female'}]
+        },
+        {
+            label: 'Role',
+            valueProperty: 'role',
+            controlType: ControlTypes.SELECT_DROPDOWN,
+            isRequired: true,
+            defaultSelectMessage: '--Select Role--',
+            optionValueProperty: 'parent.id',
+            optionDisplayProperty: 'name',
+            options: [
+            {name: 'Admin', parent:{ id:'1'}},
+            {name: 'Manager',  parent:{ id:'2'}},
+            {name: 'Delivery Head', parent:{ id:'3'}},
+            {name: 'Software Engineer', parent:{ id:'4'}}
+            ]
         }
     ];
     constructor() {

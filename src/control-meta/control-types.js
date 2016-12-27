@@ -9,6 +9,7 @@ System.register([], function(exports_1, context_1) {
                 function ControlTypes() {
                 }
                 ControlTypes.TEXTBOX = "textbox";
+                ControlTypes.EMAIL = "email";
                 ControlTypes.NUMBER = "number";
                 ControlTypes.CHECKBOX = "checkbox";
                 ControlTypes.DATE = "date";
