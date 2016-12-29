@@ -11,6 +11,7 @@ export abstract class BaseControl {
     private _valueProperty: string; //property name of the dataObject
     private _controlType: ControlTypes; // name of the control should be from enum
     private _customvalidators: Array<CustomValidation> // user based validation user can send any function it should return as boolean value
+    private _asynchValidators: Array<CustomAsychValidation> // user based validation user can send any function it should return as boolean value
     private _isRequired: boolean; // isRequired validation to be apply default true
     private _requiredMessage: string
     private _minLength: number = -1
@@ -37,6 +38,7 @@ export abstract class BaseControl {
         this.valueProperty = meta['valueProperty'];
         this.controlType = meta['controlType'];
         this.customvalidators = meta['customvalidators'];
+        this.asynchValidators = meta['asynchValidators'];
         this.isRequired = meta['isRequired'];
         this.requiredMessage = meta['requiredMessage'];
         this.minLength = meta['minlength'];
@@ -85,6 +87,12 @@ export abstract class BaseControl {
     }
     set customvalidators(customvalidators: Array<CustomValidation>) {
         this._customvalidators = customvalidators || [];
+    }
+    get asynchValidators() {
+        return this._asynchValidators;
+    }
+    set asynchValidators(asynchValidators: Array<CustomAsychValidation>) {
+        this._asynchValidators = asynchValidators || [];
     }
     get isRequired() {
         return this._isRequired;
@@ -214,6 +222,7 @@ export abstract class BaseControl {
     buildFormControl(util: any) {
         let validatorsList: any = [];
         let validatorFnList: any = [];
+        let validatorAsynchFnList: any = [];
         if (this.isRequired) {
             validatorsList.push(Validators.required);
         }
@@ -250,7 +259,7 @@ export abstract class BaseControl {
         }
         //##min and max validation for number end
         //** check box required validation start
-        if (this.isRequired && this.controlType == ControlTypes.CHECKBOX) {
+        if (this.isRequired && (this.controlType == ControlTypes.CHECKBOX || this.controlType == ControlTypes.SELECT_DROPDOWN)) {
         this.customvalidators.push({
                 validationKey: 'required',
                 validationMessage: this.requiredMessage,
@@ -267,8 +276,8 @@ export abstract class BaseControl {
             validatorsList.push(Validators.pattern(this.pattern));
         }
         for (let i = 0; i < this.customvalidators.length; i++) {
-            let fnObject: CustomValidation = this.customvalidators[0];
-            validatorsList.push((c: FormControl) => {
+            let fnObject: CustomValidation = this.customvalidators[i];
+            validatorsList.push((c:any) => {
                 if (fnObject.validationFn && fnObject.validationKey) {
                     if (fnObject.validationFn(c.value, c)) {
                         return null
@@ -282,13 +291,45 @@ export abstract class BaseControl {
                 }
             })
         }
-        this.formControl = new FormControl(this.dataObject[this.valueProperty], Validators.compose(validatorsList), validatorFnList[0]);
+        for (let i = 0; i < this.asynchValidators.length; i++) {
+            let fnObject: CustomValidation = this.asynchValidators[i];
+            validatorFnList.push((c: FormControl) => {
+                this.setAsynchValidationFlag(fnObject.validationKey, 'pending');
+                return new Promise((resolve, reject) => {
+                    if (fnObject.validationFn && fnObject.validationKey) {
+                        fnObject.validationFn(c.value, c, (res: any) => {
+                            this.setAsynchValidationFlag(fnObject.validationKey, 'completed');
+                            if (res) {
+                                return resolve(null);
+                            } else {
+                                let returnObj = {};
+                                returnObj['customasynchvali_' + fnObject.validationKey] = {
+                                    valid: false
+                                }
+                                return resolve(returnObj);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        this.formControl = new FormControl(this.dataObject[this.valueProperty], Validators.compose(validatorsList), validatorFnList);
         util.addControl(this.valueProperty, this.formControl, () => { // validation message enable callback
             this.isSubmited = true;
         });
         setTimeout(() => {
             this.enable = true;
         }, 200);
+    }
+    
+    setAsynchValidationFlag(validationKey:string, value:string) {
+        for(let i=0; i<this.asynchValidators.length ;i++){
+            let item = this.asynchValidators[i];
+            if (item.validationKey === validationKey) {
+                item.currentStatus = value;
+            }
+        }
+        
     }
 }
 
@@ -298,4 +339,10 @@ class CustomValidation {
     validationFn: any;
     validationMessage: string = '';
     validationKey: string = '';
+}
+class CustomAsychValidation {
+    validationFn: any;
+    validationMessage: string = '';
+    validationKey: string = '';
+    currentStatus: string = '';
 }

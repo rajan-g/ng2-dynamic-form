@@ -17,7 +17,7 @@ import { ControlTypes } from '../src/control-meta/control-types';
 })
 export class AppComponent {
     fromData: FromData;
-    data: any = new Object({ firstName: 'Rajan', active:'inactive' });
+    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:4});
     controls: Array<any> = [
         {
             label: 'First name',
@@ -58,15 +58,29 @@ export class AppComponent {
             label: 'Email',
             valueProperty: 'Email',
             controlType: ControlTypes.EMAIL,
-            isRequired: true
+            isRequired: true,
+            asynchValidators: [{
+                validationKey: 'email',
+                validationMessage: 'email not valid',
+                validationFn: (val: string, control:any, cb:any) => {
+                    setTimeout(() => {
+                        if (!val || val.indexOf('@gmail.com') == -1) {
+                            cb(false);
+                        }else {
+                            cb(true);
+                        }
+                    },4000)
+                    }
+            }]
+            
         },
         {
             label: 'Age',
             valueProperty: 'age',
             controlType: ControlTypes.NUMBER,
             isRequired: true,
-            min: 4,
-            max: 10,
+            min: 5,
+            max: 100,
         }
         ,
         {

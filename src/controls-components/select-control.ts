@@ -20,11 +20,11 @@ import {BaseControl} from '../control-meta/base';
                 <dyna-validation-block [self]="self"></dyna-validation-block>
             </div>
             <div  class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_horizontal'">
-                <label class="control-label col-sm-2"  [attr.for]="valueProperty">{{label}}</label>{{dataObject[valueProperty]|json}}
+                <label class="control-label col-sm-2"  [attr.for]="valueProperty">{{label}}</label>
                 <div class="col-sm-10">
                     <select class="form-control" [name]= "valueProperty" [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
-                        <option [hidden]="dataObject[valueProperty]" value="{{optiondefault}}" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
-                        <option *ngFor="let optItem of options" [ngValue]="optItem.value">{{optItem.label}}</option>
+                        <option *ngFor="let optItem of options" [value]="optItem.value" [ngValue]="optItem.value">{{optItem.label}}</option>
+                        <option *ngIf="!dataObject[valueProperty]" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
                     </select>
                 <dyna-validation-block [self]="self"></dyna-validation-block>
                 </div>

@@ -29,7 +29,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.data = new Object({ firstName: 'Rajan', active: 'inactive' });
+                    this.data = new Object({ firstName: 'Rajan', active: 'inactive', role: 4 });
                     this.controls = [
                         {
                             label: 'First name',
@@ -69,15 +69,29 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                             label: 'Email',
                             valueProperty: 'Email',
                             controlType: control_types_1.ControlTypes.EMAIL,
-                            isRequired: true
+                            isRequired: true,
+                            asynchValidators: [{
+                                    validationKey: 'email',
+                                    validationMessage: 'email not valid',
+                                    validationFn: function (val, control, cb) {
+                                        setTimeout(function () {
+                                            if (!val || val.indexOf('@gmail.com') == -1) {
+                                                cb(false);
+                                            }
+                                            else {
+                                                cb(true);
+                                            }
+                                        }, 4000);
+                                    }
+                                }]
                         },
                         {
                             label: 'Age',
                             valueProperty: 'age',
                             controlType: control_types_1.ControlTypes.NUMBER,
                             isRequired: true,
-                            min: 4,
-                            max: 10,
+                            min: 5,
+                            max: 100,
                         },
                         {
                             label: 'Mobile',

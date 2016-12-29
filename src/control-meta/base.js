@@ -5,7 +5,7 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var forms_1, control_types_1;
-    var BaseControl, CustomValidation;
+    var BaseControl, CustomValidation, CustomAsychValidation;
     return {
         setters:[
             function (forms_1_1) {
@@ -28,6 +28,7 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     this.valueProperty = meta['valueProperty'];
                     this.controlType = meta['controlType'];
                     this.customvalidators = meta['customvalidators'];
+                    this.asynchValidators = meta['asynchValidators'];
                     this.isRequired = meta['isRequired'];
                     this.requiredMessage = meta['requiredMessage'];
                     this.minLength = meta['minlength'];
@@ -85,6 +86,16 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     },
                     set: function (customvalidators) {
                         this._customvalidators = customvalidators || [];
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(BaseControl.prototype, "asynchValidators", {
+                    get: function () {
+                        return this._asynchValidators;
+                    },
+                    set: function (asynchValidators) {
+                        this._asynchValidators = asynchValidators || [];
                     },
                     enumerable: true,
                     configurable: true
@@ -296,6 +307,7 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     var _this = this;
                     var validatorsList = [];
                     var validatorFnList = [];
+                    var validatorAsynchFnList = [];
                     if (this.isRequired) {
                         validatorsList.push(forms_1.Validators.required);
                     }
@@ -332,7 +344,7 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     }
                     //##min and max validation for number end
                     //** check box required validation start
-                    if (this.isRequired && this.controlType == control_types_1.ControlTypes.CHECKBOX) {
+                    if (this.isRequired && (this.controlType == control_types_1.ControlTypes.CHECKBOX || this.controlType == control_types_1.ControlTypes.SELECT_DROPDOWN)) {
                         this.customvalidators.push({
                             validationKey: 'required',
                             validationMessage: this.requiredMessage,
@@ -349,7 +361,7 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                         validatorsList.push(forms_1.Validators.pattern(this.pattern));
                     }
                     var _loop_1 = function(i) {
-                        var fnObject = this_1.customvalidators[0];
+                        var fnObject = this_1.customvalidators[i];
                         validatorsList.push(function (c) {
                             if (fnObject.validationFn && fnObject.validationKey) {
                                 if (fnObject.validationFn(c.value, c)) {
@@ -370,13 +382,48 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     for (var i = 0; i < this.customvalidators.length; i++) {
                         _loop_1(i);
                     }
-                    this.formControl = new forms_1.FormControl(this.dataObject[this.valueProperty], forms_1.Validators.compose(validatorsList), validatorFnList[0]);
+                    var _loop_2 = function(i) {
+                        var fnObject = this_2.asynchValidators[i];
+                        validatorFnList.push(function (c) {
+                            _this.setAsynchValidationFlag(fnObject.validationKey, 'pending');
+                            return new Promise(function (resolve, reject) {
+                                if (fnObject.validationFn && fnObject.validationKey) {
+                                    fnObject.validationFn(c.value, c, function (res) {
+                                        _this.setAsynchValidationFlag(fnObject.validationKey, 'completed');
+                                        if (res) {
+                                            return resolve(null);
+                                        }
+                                        else {
+                                            var returnObj = {};
+                                            returnObj['customasynchvali_' + fnObject.validationKey] = {
+                                                valid: false
+                                            };
+                                            return resolve(returnObj);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    };
+                    var this_2 = this;
+                    for (var i = 0; i < this.asynchValidators.length; i++) {
+                        _loop_2(i);
+                    }
+                    this.formControl = new forms_1.FormControl(this.dataObject[this.valueProperty], forms_1.Validators.compose(validatorsList), validatorFnList);
                     util.addControl(this.valueProperty, this.formControl, function () {
                         _this.isSubmited = true;
                     });
                     setTimeout(function () {
                         _this.enable = true;
                     }, 200);
+                };
+                BaseControl.prototype.setAsynchValidationFlag = function (validationKey, value) {
+                    for (var i = 0; i < this.asynchValidators.length; i++) {
+                        var item = this.asynchValidators[i];
+                        if (item.validationKey === validationKey) {
+                            item.currentStatus = value;
+                        }
+                    }
                 };
                 return BaseControl;
             }());
@@ -387,6 +434,14 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     this.validationKey = '';
                 }
                 return CustomValidation;
+            }());
+            CustomAsychValidation = (function () {
+                function CustomAsychValidation() {
+                    this.validationMessage = '';
+                    this.validationKey = '';
+                    this.currentStatus = '';
+                }
+                return CustomAsychValidation;
             }());
         }
     }
