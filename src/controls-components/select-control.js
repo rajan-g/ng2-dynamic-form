@@ -36,11 +36,13 @@ System.register(['@angular/core', '../control-meta/base'], function(exports_1, c
                 function SelectControl() {
                     _super.apply(this, arguments);
                     this.self = this;
+                    this._selectedList = [];
                 }
                 SelectControl.prototype.ngOnInit = function () {
                     this.optionValueProperty = this.controlMeta['optionValueProperty'];
                     this.optionDisplayProperty = this.controlMeta['optionDisplayProperty'];
                     this.defaultSelectMessage = this.controlMeta['defaultSelectMessage'];
+                    this.multiselect = this.controlMeta['multiselect'];
                     this.options = this.controlMeta['options'];
                     this.init(this.controlMeta, this.util, this.dataObject);
                     this.dataObject[this.valueProperty] = this.dataObject[this.valueProperty] || false;
@@ -51,6 +53,16 @@ System.register(['@angular/core', '../control-meta/base'], function(exports_1, c
                     },
                     set: function (defaultSelectMessage) {
                         this._defaultSelectMessage = defaultSelectMessage || '--Select--';
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(SelectControl.prototype, "multiselect", {
+                    get: function () {
+                        return this._multiselect;
+                    },
+                    set: function (multiselect) {
+                        this._multiselect = multiselect;
                     },
                     enumerable: true,
                     configurable: true
@@ -118,6 +130,23 @@ System.register(['@angular/core', '../control-meta/base'], function(exports_1, c
                         return null;
                     }
                 };
+                SelectControl.prototype.onChange = function ($event) {
+                    this._selectedList = [];
+                    for (var i = 0; i < $event.target.options.length; i++) {
+                        if ($event.target.options[i].selected) {
+                            if ($event.target.options[i].value) {
+                                this._selectedList.push(JSON.parse($event.target.options[i].value));
+                            }
+                        }
+                    }
+                };
+                Object.defineProperty(SelectControl.prototype, "selectedList", {
+                    get: function () {
+                        return this._selectedList;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 __decorate([
                     core_1.Input('controlmeta'), 
                     __metadata('design:type', SelectControl)
@@ -141,7 +170,7 @@ System.register(['@angular/core', '../control-meta/base'], function(exports_1, c
                 SelectControl = __decorate([
                     core_1.Component({
                         selector: 'select-ctl',
-                        template: "\n        <div *ngIf=\"enable\" [formGroup]=\"dynaForm\" [ngClass]=\"{'has-error':dynaForm && dynaForm.controls[valueProperty] && !dynaForm.controls[valueProperty].valid && dynaForm.controls[valueProperty].touched}\">\n            <div  class=\"form-group\" *ngIf=\"utilInfos.formStyle === 'bootstrap_vertical' || utilInfos.formStyle === 'bootstrap_inline'\">\n                <label  [attr.for]=\"valueProperty\">{{label}}</label>\n                <select class=\"form-control\" [name]= \"valueProperty\"  [id]= \"valueProperty\" [formControlName]=\"valueProperty\" [(ngModel)]=\"dataObject[valueProperty]\">\n                    <option [hidden]=\"dataObject[valueProperty]\" value=\"{{optiondefault}}\" [selected] =\"dataObject[valueProperty] ? false: true\">{{defaultSelectMessage}}</option>\n                    <option *ngFor=\"let opt of options\" [value]=\"opt.value\">{{opt.label}}</option>\n                </select>\n                <dyna-validation-block [self]=\"self\"></dyna-validation-block>\n            </div>\n            <div  class=\"form-group\" *ngIf=\"utilInfos.formStyle === 'bootstrap_horizontal'\">\n                <label class=\"control-label col-sm-2\"  [attr.for]=\"valueProperty\">{{label}}</label>\n                <div class=\"col-sm-10\">\n                    <select class=\"form-control\" [name]= \"valueProperty\" [id]= \"valueProperty\" [formControlName]=\"valueProperty\" [(ngModel)]=\"dataObject[valueProperty]\">\n                        <option *ngFor=\"let optItem of options\" [value]=\"optItem.value\" [ngValue]=\"optItem.value\">{{optItem.label}}</option>\n                        <option *ngIf=\"!dataObject[valueProperty]\" [selected] =\"dataObject[valueProperty] ? false: true\">{{defaultSelectMessage}}</option>\n                    </select>\n                <dyna-validation-block [self]=\"self\"></dyna-validation-block>\n                </div>\n            </div>\n        </div>\n    "
+                        template: "\n        <div *ngIf=\"enable\" [formGroup]=\"dynaForm\" [ngClass]=\"{'has-error':dynaForm && dynaForm.controls[valueProperty] && !dynaForm.controls[valueProperty].valid && dynaForm.controls[valueProperty].touched}\">\n            <div  class=\"form-group\" *ngIf=\"utilInfos.formStyle === 'bootstrap_vertical' || utilInfos.formStyle === 'bootstrap_inline'\">\n                <label  [attr.for]=\"valueProperty\">{{label}}</label>\n                <select [attr.multiple]=\"multiselect ? true: null\" class=\"form-control\" (change)=\"onChange($event)\" [name]= \"valueProperty\"  [id]= \"valueProperty\" [formControlName]=\"valueProperty\" [(ngModel)]=\"dataObject[valueProperty]\">\n                    <option [hidden]=\"dataObject[valueProperty]\" value=\"{{optiondefault}}\" [selected] =\"dataObject[valueProperty] ? false: true\">{{defaultSelectMessage}}</option>\n                    <option *ngFor=\"let optItem of options\" [value]=\"optItem.value |json\" [selected] =\"optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false\" >{{optItem.label}}</option>\n                </select>\n                <dyna-validation-block [self]=\"self\"></dyna-validation-block>\n            </div>\n            <div  class=\"form-group\" *ngIf=\"utilInfos.formStyle === 'bootstrap_horizontal'\">\n                <label class=\"control-label col-sm-2\"  [attr.for]=\"valueProperty\">{{label}}</label>\n                <div class=\"col-sm-10\">\n                    <select [attr.multiple]=\"multiselect ? true: null\" class=\"form-control\" (change)=\"onChange($event)\" [name]= \"valueProperty\" [id]= \"valueProperty\" [formControlName]=\"valueProperty\" [(ngModel)]=\"dataObject[valueProperty]\">\n                        <option *ngFor=\"let optItem of options\" [value]=\"optItem.value | json\" [selected] =\"optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false\" >{{optItem.label}}</option>\n                        <option *ngIf=\"!dataObject[valueProperty]\" [selected] =\"dataObject[valueProperty] ? false: true\">{{defaultSelectMessage}}</option>\n                    </select>\n                <dyna-validation-block [self]=\"self\"></dyna-validation-block>\n                </div>\n            </div>\n        </div>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SelectControl);

@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { DynaFormComponent } from './controls-components/dynamic-form-component';
+import { PropertyHandler } from './control-meta/PropertyHandler';
 import { TextControl } from './controls-components/text-control';
 import { NumberControl } from './controls-components/number-control';
 import { CheckBoxControl } from './controls-components/checkbox-control';
@@ -22,7 +23,8 @@ import { DynaValidationBlock } from './controls-components/validation-messages-b
              RadioControl, EmailControl,
              SelectControl,
              DynaValidationBlock ],
+  providers:[PropertyHandler]
 })
 export class DynaFormModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: DynaFormModule, providers: []}; }
+  static forRoot(): ModuleWithProviders { return {ngModule: DynaFormModule, providers: [PropertyHandler]}; }
 }

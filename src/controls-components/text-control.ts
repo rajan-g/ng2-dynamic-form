@@ -13,13 +13,13 @@ import {BaseControl} from '../control-meta/base';
         <div *ngIf="enable" [formGroup]="dynaForm" [ngClass]="{'has-error':dynaForm && dynaForm.controls[valueProperty] && !dynaForm.controls[valueProperty].valid && dynaForm.controls[valueProperty].touched}">
             <div  class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_vertical' || utilInfos.formStyle === 'bootstrap_inline'">
                 <label  [attr.for]="valueProperty">{{label}}</label>
-                <input class="form-control" type="text" [name]= "valueProperty"  [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
+                <input class="form-control" placeholder="{{placeHolder}}" type="text" [name]= "valueProperty"  [id]= "valueProperty" [attr.autocomplete]="autocomplete" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
                 <dyna-validation-block [self]="self"></dyna-validation-block>
             </div>
             <div  class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_horizontal'">
                 <label class="control-label col-sm-2"  [attr.for]="valueProperty">{{label}}</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" [name]= "valueProperty"  [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
+                    <input class="form-control" placeholder="{{placeHolder}}" type="text" [name]= "valueProperty"  [id]= "valueProperty" [attr.autocomplete]="autocomplete" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
                 <dyna-validation-block [self]="self"></dyna-validation-block>
                 </div>
             </div>

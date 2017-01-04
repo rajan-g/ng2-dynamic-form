@@ -13,17 +13,17 @@ import {BaseControl} from '../control-meta/base';
         <div *ngIf="enable" [formGroup]="dynaForm" [ngClass]="{'has-error':dynaForm && dynaForm.controls[valueProperty] && !dynaForm.controls[valueProperty].valid && dynaForm.controls[valueProperty].touched}">
             <div  class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_vertical' || utilInfos.formStyle === 'bootstrap_inline'">
                 <label  [attr.for]="valueProperty">{{label}}</label>
-                <select class="form-control" [name]= "valueProperty"  [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
+                <select [attr.multiple]="multiselect ? true: null" class="form-control" (change)="onChange($event)" [name]= "valueProperty"  [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
                     <option [hidden]="dataObject[valueProperty]" value="{{optiondefault}}" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
-                    <option *ngFor="let opt of options" [value]="opt.value">{{opt.label}}</option>
+                    <option *ngFor="let optItem of options" [value]="optItem.value |json" [selected] ="optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false" >{{optItem.label}}</option>
                 </select>
                 <dyna-validation-block [self]="self"></dyna-validation-block>
             </div>
             <div  class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_horizontal'">
                 <label class="control-label col-sm-2"  [attr.for]="valueProperty">{{label}}</label>
                 <div class="col-sm-10">
-                    <select class="form-control" [name]= "valueProperty" [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
-                        <option *ngFor="let optItem of options" [value]="optItem.value" [ngValue]="optItem.value">{{optItem.label}}</option>
+                    <select [attr.multiple]="multiselect ? true: null" class="form-control" (change)="onChange($event)" [name]= "valueProperty" [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
+                        <option *ngFor="let optItem of options" [value]="optItem.value | json" [selected] ="optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false" >{{optItem.label}}</option>
                         <option *ngIf="!dataObject[valueProperty]" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
                     </select>
                 <dyna-validation-block [self]="self"></dyna-validation-block>
@@ -40,13 +40,16 @@ export class SelectControl extends BaseControl implements OnInit {
     @Input('utilInfos') utilInfos:Object;
     self:any = this;
    _options:Array<any>;
+   _multiselect:boolean;
    _defaultSelectMessage:string;
    _optionValueProperty:string;
    _optionDisplayProperty:string;
+   _selectedList:Array<any> = [];
     ngOnInit() {
         this.optionValueProperty = this.controlMeta['optionValueProperty'];
         this.optionDisplayProperty = this.controlMeta['optionDisplayProperty'];
         this.defaultSelectMessage = this.controlMeta['defaultSelectMessage'];
+        this.multiselect = this.controlMeta['multiselect'];
         this.options = this.controlMeta['options'];
         this.init(this.controlMeta, this.util, this.dataObject);
         this.dataObject[this.valueProperty] = this.dataObject[this.valueProperty] || false;
@@ -57,6 +60,12 @@ export class SelectControl extends BaseControl implements OnInit {
     }
     set defaultSelectMessage(defaultSelectMessage:string) {
         this._defaultSelectMessage = defaultSelectMessage || '--Select--';
+    }
+    get multiselect() {
+        return this._multiselect;
+    }
+    set multiselect(multiselect:boolean) {
+        this._multiselect = multiselect;
     }
     get optionValueProperty() {
         return this._optionValueProperty;
@@ -107,5 +116,20 @@ export class SelectControl extends BaseControl implements OnInit {
             return null;
         }
         
+    }   
+    
+    onChange($event: any) {
+        this._selectedList = [];
+        for (let i = 0; i < $event.target.options.length; i++) {
+            if ($event.target.options[i].selected) {
+                if($event.target.options[i].value) {
+                    this._selectedList.push(JSON.parse($event.target.options[i].value))
+                }
+            }
+        }
+    }
+    
+    get selectedList() {
+        return this._selectedList;
     }
 }

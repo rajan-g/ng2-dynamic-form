@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl} from '@angular/forms';
 import { FromData} from '../control-meta/FormData';
 import { ControlTypes } from '../control-meta/control-types';
 import { FormStyles } from '../control-meta/FormStyles';
+import { PropertyHandler } from '../control-meta/PropertyHandler';
+import { SelectControl } from './select-control';
 @Component({
     selector: 'dynaform',
     template: `
@@ -36,9 +38,11 @@ import { FormStyles } from '../control-meta/FormStyles';
 })
 export class DynaFormComponent implements OnInit {
     @Input('formData') formData:FromData;
+    @ViewChildren(SelectControl) selectCtls:Array<SelectControl>;
     enableForm:boolean = false;
     utilInfos: any = { formStyle: FormStyles.BOOTSTRAP_VERTICAL, theme: FormStyles.THEME_BOOTSTRAP};
     dynaForm: FormGroup;
+    originalInputData:any;
     controls = {};
     util:any= {
         addControl : (name:string, formControl:FormControl, isSubmitedCb:any) => {
@@ -47,7 +51,7 @@ export class DynaFormComponent implements OnInit {
                 enableError: isSubmitedCb            }
         }
     }
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private propertyHandler:PropertyHandler) {
         
     }
 
@@ -68,6 +72,7 @@ export class DynaFormComponent implements OnInit {
          this.formData.formStyle =this.formData.formStyle || FormStyles.BOOTSTRAP_VERTICAL;
          this.formData.theme = this.formData.theme || FormStyles.THEME_BOOTSTRAP;
          this.utilInfos.formStyle = this.formData.formStyle;
+         this.setCustomizedDataObject()
          this.enableForm = true;
      }
 
@@ -78,8 +83,10 @@ export class DynaFormComponent implements OnInit {
             }
             return;
         }
-        this.setCheckBoxValue();        
-        this.formData.cb(this.formData.dataObject);
+        this.setCheckBoxValue();    
+        this.setSelectBoxValues();  
+        this.composeResultData();
+        this.formData.cb(this.originalInputData);
     }
     
     isRadiosValid() {
@@ -95,7 +102,7 @@ export class DynaFormComponent implements OnInit {
         return true;
     }
     
-    setCheckBoxValue() {        
+    setCheckBoxValue() {     
         for (let i = 0; i < this.formData.controls.length; i++) {
             //checkbox unchecked value setup
             let ctl = this.formData.controls[i];
@@ -108,5 +115,43 @@ export class DynaFormComponent implements OnInit {
             }
         }
     };
+    
+    setSelectBoxValues() {
+        for (let i = 0; i < this.selectCtls.length; i++) {
+            let ctl = this.selectCtls['_results'][i];
+            if (ctl.multiselect) {
+                this.formData.dataObject[ctl.valueProperty] = ctl.selectedList ;
+            }else {
+                this.formData.dataObject[ctl.valueProperty] =  JSON.parse(ctl.dataObject[ctl.valueProperty]) ;
+            }
+        }
+    }
+    
+    setCustomizedDataObject() {
+        let originalInputData = this.formData.dataObject;
+        let controls = this.formData.controls
+        let customDataObject = {};
+        for(let i=0; i<controls.length; i++) {
+            let prop = controls[i]['valueProperty'];
+            let value = this.propertyHandler.getValueByProperty(originalInputData, prop);
+            customDataObject[prop] = value;
+            originalInputData = this.propertyHandler.buildPropertyWithValue(originalInputData, prop, value);
+        }
+        this.originalInputData = originalInputData;
+        this.formData.dataObject = customDataObject;
+    }
+    
+    composeResultData() {
+        let originalInputData = this.originalInputData;
+        let controls = this.formData.controls
+        let customDataObject = this.formData.dataObject;;
+        for(let i=0; i<controls.length; i++) {
+            let prop = controls[i]['valueProperty'];
+            let value = customDataObject[prop];
+            customDataObject[prop] = value;
+            originalInputData = this.propertyHandler.buildPropertyWithValue(originalInputData, prop, value);
+        }
+        this.originalInputData = originalInputData;
+    }
      
 }

@@ -29,7 +29,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.data = new Object({ firstName: 'Rajan', active: 'inactive', role: 4 });
+                    this.data = new Object({ firstName: 'Rajan', active: 'inactive', role: { parent: { id: 2 } } });
                     this.controls = [
                         {
                             label: 'First name',
@@ -50,6 +50,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                         {
                             label: 'Username',
                             valueProperty: 'userName',
+                            placeHolder: 'User name',
                             controlType: control_types_1.ControlTypes.TEXTBOX,
                             isRequired: true,
                             minlength: 4,
@@ -112,24 +113,25 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                         },
                         {
                             label: 'Gender',
-                            valueProperty: 'gender',
+                            valueProperty: 'gender.category',
                             controlType: control_types_1.ControlTypes.RADIO,
                             isRequired: true,
                             options: [{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]
                         },
                         {
                             label: 'Role',
-                            valueProperty: 'role',
+                            valueProperty: 'role.parent.id',
                             controlType: control_types_1.ControlTypes.SELECT_DROPDOWN,
                             isRequired: true,
+                            multiselect: false,
                             defaultSelectMessage: '--Select Role--',
                             optionValueProperty: 'parent.id',
                             optionDisplayProperty: 'name',
                             options: [
-                                { name: 'Admin', parent: { id: '1' } },
-                                { name: 'Manager', parent: { id: '2' } },
-                                { name: 'Delivery Head', parent: { id: '3' } },
-                                { name: 'Software Engineer', parent: { id: '4' } }
+                                { name: 'Admin', parent: { id: 1 } },
+                                { name: 'Manager', parent: { id: 2 } },
+                                { name: 'Delivery Head', parent: { id: 3 } },
+                                { name: 'Software Engineer', parent: { id: 4 } }
                             ]
                         }
                     ];

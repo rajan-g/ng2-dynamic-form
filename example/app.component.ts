@@ -17,7 +17,7 @@ import { ControlTypes } from '../src/control-meta/control-types';
 })
 export class AppComponent {
     fromData: FromData;
-    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:4});
+    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id: 2}}});
     controls: Array<any> = [
         {
             label: 'First name',
@@ -38,6 +38,7 @@ export class AppComponent {
         {
             label: 'Username',
             valueProperty: 'userName',
+            placeHolder: 'User name',
             controlType: ControlTypes.TEXTBOX,
             isRequired: true,
             minlength: 4,
@@ -103,24 +104,25 @@ export class AppComponent {
         },
         {
             label: 'Gender',
-            valueProperty: 'gender',
+            valueProperty: 'gender.category',
             controlType: ControlTypes.RADIO,
             isRequired: true,
             options: [{label: 'Male', value:'male'}, {label: 'Female', value:'female'}]
         },
         {
             label: 'Role',
-            valueProperty: 'role',
+            valueProperty: 'role.parent.id',
             controlType: ControlTypes.SELECT_DROPDOWN,
             isRequired: true,
+            multiselect:false,
             defaultSelectMessage: '--Select Role--',
             optionValueProperty: 'parent.id',
             optionDisplayProperty: 'name',
             options: [
-            {name: 'Admin', parent:{ id:'1'}},
-            {name: 'Manager',  parent:{ id:'2'}},
-            {name: 'Delivery Head', parent:{ id:'3'}},
-            {name: 'Software Engineer', parent:{ id:'4'}}
+            {name: 'Admin', parent:{ id:1}},
+            {name: 'Manager',  parent:{ id:2}},
+            {name: 'Delivery Head', parent:{ id:3}},
+            {name: 'Software Engineer', parent:{ id:4}}
             ]
         }
     ];

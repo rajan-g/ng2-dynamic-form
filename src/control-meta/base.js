@@ -24,6 +24,8 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                 }
                 BaseControl.prototype.init = function (meta, util, dataObject) {
                     this.label = meta['label'];
+                    this.placeHolder = meta['placeHolder'];
+                    this.autocomplete = meta['autocomplete'];
                     this.dataObject = dataObject;
                     this.valueProperty = meta['valueProperty'];
                     this.controlType = meta['controlType'];
@@ -53,6 +55,26 @@ System.register(['@angular/forms', './control-types'], function(exports_1, conte
                     },
                     set: function (label) {
                         this._label = label;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(BaseControl.prototype, "placeHolder", {
+                    get: function () {
+                        return this._placeHolder || this.label;
+                    },
+                    set: function (placeHolder) {
+                        this._placeHolder = placeHolder;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(BaseControl.prototype, "autocomplete", {
+                    get: function () {
+                        return this._autocomplete;
+                    },
+                    set: function (autocomplete) {
+                        this._autocomplete = autocomplete || 'off';
                     },
                     enumerable: true,
                     configurable: true

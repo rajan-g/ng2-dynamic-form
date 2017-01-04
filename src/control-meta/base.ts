@@ -7,6 +7,8 @@ import { ControlTypes } from './control-types';
 
 export abstract class BaseControl {
     private _label: string; // name of the control label
+    private _placeHolder: string; // placeHolder of the control 
+    private _autocomplete: string; // placeHolder of the control 
     private _dataObject: any; //name of the input or object property
     private _valueProperty: string; //property name of the dataObject
     private _controlType: ControlTypes; // name of the control should be from enum
@@ -34,6 +36,8 @@ export abstract class BaseControl {
 
     init(meta: any, util: any, dataObject: Object) {
         this.label = meta['label'];
+        this.placeHolder = meta['placeHolder'];
+        this.autocomplete = meta['autocomplete'];
         this.dataObject = dataObject;
         this.valueProperty = meta['valueProperty'];
         this.controlType = meta['controlType'];
@@ -64,6 +68,20 @@ export abstract class BaseControl {
 
     set label(label: string) {
         this._label = label;
+    }
+    get placeHolder() {
+        return this._placeHolder || this.label;
+    }
+
+    set placeHolder(placeHolder: string) {
+        this._placeHolder = placeHolder;
+    }
+    get autocomplete() {
+        return this._autocomplete;
+    }
+
+    set autocomplete(autocomplete: string) {
+        this._autocomplete = autocomplete || 'off';
     }
     get valueProperty() {
         return this._valueProperty;
