@@ -29,7 +29,8 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.data = new Object({ firstName: 'Rajan', active: 'inactive', role: { parent: { id: 2 } } });
+                    //    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id:[1, 2]}}});
+                    this.data = { "firstName": "Rajan", "active": "active", "role": { "parent": { "id": [1, 2] } }, "lastName": "rajan", "userName": "rajan", "Email": "rajan@gmail.com", "age": 33, "mobile": "3333333333", "gender": { "category": "male" } };
                     this.controls = [
                         {
                             label: 'First name',
@@ -123,7 +124,7 @@ System.register(['@angular/core', '../src/control-meta/FormStyles', '../src/cont
                             valueProperty: 'role.parent.id',
                             controlType: control_types_1.ControlTypes.SELECT_DROPDOWN,
                             isRequired: true,
-                            multiselect: false,
+                            multiselect: true,
                             defaultSelectMessage: '--Select Role--',
                             optionValueProperty: 'parent.id',
                             optionDisplayProperty: 'name',

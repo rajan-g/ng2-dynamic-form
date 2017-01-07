@@ -17,7 +17,8 @@ import { ControlTypes } from '../src/control-meta/control-types';
 })
 export class AppComponent {
     fromData: FromData;
-    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id: 2}}});
+//    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id:[1, 2]}}});
+    data: any = {"firstName":"Rajan","active":"active","role":{"parent":{"id":[1,2]}},"lastName":"rajan","userName":"rajan","Email":"rajan@gmail.com","age":33,"mobile":"3333333333","gender":{"category":"male"}};
     controls: Array<any> = [
         {
             label: 'First name',
@@ -114,7 +115,7 @@ export class AppComponent {
             valueProperty: 'role.parent.id',
             controlType: ControlTypes.SELECT_DROPDOWN,
             isRequired: true,
-            multiselect:false,
+            multiselect:true, // if it is true value property should be a array
             defaultSelectMessage: '--Select Role--',
             optionValueProperty: 'parent.id',
             optionDisplayProperty: 'name',

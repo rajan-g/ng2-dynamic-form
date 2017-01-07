@@ -15,7 +15,7 @@ import {BaseControl} from '../control-meta/base';
                 <label  [attr.for]="valueProperty">{{label}}</label>
                 <select [attr.multiple]="multiselect ? true: null" class="form-control" (change)="onChange($event)" [name]= "valueProperty"  [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
                     <option [hidden]="dataObject[valueProperty]" value="{{optiondefault}}" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
-                    <option *ngFor="let optItem of options" [value]="optItem.value |json" [selected] ="optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false" >{{optItem.label}}</option>
+                    <option *ngFor="let optItem of options" [value]="optItem.value |json" [selected] ="isSelected(optItem)" >{{optItem.label}}</option>
                 </select>
                 <dyna-validation-block [self]="self"></dyna-validation-block>
             </div>
@@ -23,14 +23,15 @@ import {BaseControl} from '../control-meta/base';
                 <label class="control-label col-sm-2"  [attr.for]="valueProperty">{{label}}</label>
                 <div class="col-sm-10">
                     <select [attr.multiple]="multiselect ? true: null" class="form-control" (change)="onChange($event)" [name]= "valueProperty" [id]= "valueProperty" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
-                        <option *ngFor="let optItem of options" [value]="optItem.value | json" [selected] ="optItem.value && (dataObject[valueProperty]|json) == (optItem.value | json) ? true: false" >{{optItem.label}}</option>
+                        <option *ngFor="let optItem of options" [value]="optItem.value | json" [selected] ="isSelected(optItem)" >{{optItem.label}}</option>
                         <option *ngIf="!dataObject[valueProperty]" [selected] ="dataObject[valueProperty] ? false: true">{{defaultSelectMessage}}</option>
                     </select>
                 <dyna-validation-block [self]="self"></dyna-validation-block>
                 </div>
             </div>
         </div>
-    `
+    `,
+    styles: ['option[ng-reflect-selected="true"] {background-color: #428BCA;color:#fff}']
 })
 export class SelectControl extends BaseControl implements OnInit {
     @Input('controlmeta') controlMeta:SelectControl;
@@ -98,6 +99,25 @@ export class SelectControl extends BaseControl implements OnInit {
             tempOptions.push(tempOpt);
         }
         this._options = tempOptions;
+    }
+    isSelected(optItem:any) {
+        if (!this.multiselect) {
+        if (optItem && optItem['value'] && JSON.stringify(optItem.value) === JSON.stringify(this.dataObject[this.valueProperty])) {
+            return true;
+        }
+        }else {
+            let valueArray = this.dataObject[this.valueProperty];
+            let temArray:Array<any> = [];
+            for(let item of valueArray) {
+                temArray.push(JSON.stringify(item))
+            }
+            if (temArray.indexOf(JSON.stringify(optItem.value))!== -1) {
+                return true;
+            }
+            
+        }
+        
+        return null;
     }
     getValueByProperty(object:any,property:string) {
         try {
