@@ -1,6 +1,6 @@
 {
   "name": "ng2-dynamic-form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ng2-dynamic-form is angular2 module. It will generate dynamic form based on schema input or this directive must need boostrap package",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "typings": "typings",
     "postinstall": "typings install",
     "build": "rm -rf dist && tsc -p src",
+    "tsc-bundle": " tsc-bundle --project src/tsconfig.json",
     "webpack": "webpack-dev-server --colors --display-error-details --content-base src"
   },
   "repository": {

@@ -2,7 +2,7 @@
 var gulp = require('gulp');
 var path = require("path");
 var Builder = require('systemjs-builder');
-
+// https://blog.angular-university.io/how-to-create-an-angular-2-library-and-how-to-consume-it-jspm-vs-webpack/
 gulp.task('build', function(){
     var builder = new Builder('./');
     // builder.buildStatic('src/dynaform.module.js', './outfile.js',
