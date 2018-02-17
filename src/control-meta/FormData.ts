@@ -1,5 +1,5 @@
 import { FormStyles} from './FormStyles';
-export class FromData {
+export class FormData {
     formName:string;
     controls:Array<any>;
     dataObject:Object;   

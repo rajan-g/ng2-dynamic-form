@@ -1,0 +1,72 @@
+import { FormControl } from '@angular/forms';
+import { ControlTypes } from './control-types';
+export declare abstract class BaseControl {
+    private _label;
+    private _placeHolder;
+    private _autocomplete;
+    private _dataObject;
+    private _valueProperty;
+    private _controlType;
+    private _customvalidators;
+    private _asynchValidators;
+    private _isRequired;
+    private _requiredMessage;
+    private _minLength;
+    private _minLengthMessage;
+    private _maxLength;
+    private _maxLengthMessage;
+    private _min;
+    private _minMessage;
+    private _max;
+    private _maxMessage;
+    private _pattern;
+    private _patternMessage;
+    private _controlClasses;
+    private _lableClasses;
+    private _controlClassesOnError;
+    private _lableClassesOnError;
+    private _formControl;
+    private _enable;
+    private _isSubmited;
+    init(meta: any, util: any, dataObject: Object): void;
+    label: string;
+    placeHolder: string;
+    autocomplete: string;
+    valueProperty: string;
+    controlType: ControlTypes;
+    customvalidators: Array<CustomValidation>;
+    asynchValidators: Array<CustomAsychValidation>;
+    isRequired: boolean;
+    requiredMessage: string;
+    minLength: number;
+    minLengthMessage: string;
+    maxLength: number;
+    maxLengthMessage: string;
+    min: number;
+    minMessage: string;
+    max: number;
+    maxMessage: string;
+    pattern: string;
+    patternMessage: string;
+    controlClasses: Array<string>;
+    lableClasses: Array<string>;
+    controlClassesOnError: Array<string>;
+    lableClassesOnError: Array<string>;
+    dataObject: Object;
+    formControl: FormControl;
+    enable: boolean;
+    isSubmited: boolean;
+    buildFormControl(util: any): void;
+    setAsynchValidationFlag(validationKey: string, value: string): void;
+}
+export declare class CustomValidation {
+    validationFn: any;
+    validationMessage: string;
+    validationKey: string;
+}
+export declare class CustomAsychValidation {
+    validationFn: any;
+    validationMessage: string;
+    validationKey: string;
+    currentStatus: string;
+}

@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { DynaFormComponent } from './controls-components/dynamic-form-component';
 import { PropertyHandler } from './control-meta/PropertyHandler';
@@ -12,7 +12,7 @@ import { SelectControl } from './controls-components/select-control';
 import { DynaValidationBlock } from './controls-components/validation-messages-block';
 
 @NgModule({
-  imports:      [ BrowserModule,  FormsModule, ReactiveFormsModule],
+  imports:      [ CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [ DynaFormComponent, TextControl,
                   NumberControl, CheckBoxControl,
                   RadioControl,EmailControl,

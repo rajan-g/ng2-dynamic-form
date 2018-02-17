@@ -6,7 +6,7 @@
 
 import {Component, Input, OnInit, ViewChildren} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl} from '@angular/forms';
-import { FromData} from '../control-meta/FormData';
+import { FormData} from '../control-meta/FormData';
 import { ControlTypes } from '../control-meta/control-types';
 import { FormStyles } from '../control-meta/FormStyles';
 import { PropertyHandler } from '../control-meta/PropertyHandler';
@@ -37,7 +37,7 @@ import { SelectControl } from './select-control';
     `
 })
 export class DynaFormComponent implements OnInit {
-    @Input('formData') formData:FromData;
+    @Input('formData') formData:FormData;
     @ViewChildren(SelectControl) selectCtls:Array<SelectControl>;
     enableForm:boolean = false;
     utilInfos: any = { formStyle: FormStyles.BOOTSTRAP_VERTICAL, theme: FormStyles.THEME_BOOTSTRAP};

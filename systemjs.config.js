@@ -6,7 +6,7 @@
   // map tells the System loader where to look for things
   var map = {
     'app':                        'example', // 'dist',
-    'src':                        'src',
+    'dist':                        'dist',
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs'
@@ -17,7 +17,7 @@
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
     'directive' : {defaultExtension:'js'},
-    'src' : {defaultExtension:'js'}
+    'dist' : {defaultExtension:'js'}
   };
   var ngPackageNames = [
     'common',

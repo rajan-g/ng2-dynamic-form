@@ -3,20 +3,20 @@
  */
 
 import { Component } from '@angular/core';
-import { FromData } from '../src/control-meta/FormData';
-import { FormStyles } from '../src/control-meta/FormStyles';
-import { ControlTypes } from '../src/control-meta/control-types';
+import { FormData } from '../dist/control-meta/FormData';
+import { FormStyles } from '../dist/control-meta/FormStyles';
+import { ControlTypes } from '../dist/control-meta/control-types';
 
 @Component({
     selector: 'my-app',
     template: `
-    <div *ngIf="fromData">
-    <dynaform [formData]="fromData" ></dynaform>
+    <div *ngIf="formData">
+    <dynaform [formData]="formData" ></dynaform>
     </div>
 `,
 })
 export class AppComponent {
-    fromData: FromData;
+    formData: FormData;
 //    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id:[1, 2]}}});
     data: any = {"firstName":"Rajan","active":"active","role":{"parent":{"id":[1,2]}},"lastName":"rajan","userName":"rajan","Email":"rajan@gmail.com","age":33,"mobile":"3333333333","gender":{"category":"male"}};
     controls: Array<any> = [
@@ -131,7 +131,7 @@ export class AppComponent {
         //            this.fromData = new FromData('sampleform', this.controls, this.data, (formData:any) => {
         //                console.log('form data', formData)
         //            })
-        this.fromData = {
+        this.formData = {
             formName: 'sampleform',
             formStyle: FormStyles.BOOTSTRAP_HORIZONTAL,
             theme: FormStyles.THEME_BOOTSTRAP,

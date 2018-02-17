@@ -353,12 +353,12 @@ export abstract class BaseControl {
 
 
 
-class CustomValidation {
+export class CustomValidation {
     validationFn: any;
     validationMessage: string = '';
     validationKey: string = '';
 }
-class CustomAsychValidation {
+export class CustomAsychValidation {
     validationFn: any;
     validationMessage: string = '';
     validationKey: string = '';
