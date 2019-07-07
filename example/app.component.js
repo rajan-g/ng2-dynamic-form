@@ -15,10 +15,75 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const FormStyles_1 = require("../dist/control-meta/FormStyles");
 const control_types_1 = require("../dist/control-meta/control-types");
+const configs_1 = require("../src/configs/configs");
 let AppComponent = class AppComponent {
     constructor() {
         //    data: any = new Object({ firstName: 'Rajan', active:'inactive',role:{parent:{id:[1, 2]}}});
-        this.data = { "firstName": "Rajan", "active": "active", "role": { "parent": { "id": [1, 2] } }, "lastName": "rajan", "userName": "rajan", "Email": "rajan@gmail.com", "age": 33, "mobile": "3333333333", "gender": { "category": "male" } };
+        this.data = { "firstName": "Rajan", "active": "active", "role": { "parent": { "id": [1, 2] } }, "lastName": "Gunasekaran", "userName": "rajan", "Email": "rajan@gmail.com", "age": 33, "mobile": "3333333333", "gender": { "category": "male" } };
+        this.validationConfig = {
+            possition: configs_1.ValidationPosition.bottom
+        };
+        this.controls1 = [
+            {
+                label: 'First name1',
+                valueProperty: 'firstName1',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10,
+                readOnly: false
+            },
+            {
+                label: 'Last Name1',
+                valueProperty: 'lastName1',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10,
+            }
+        ];
+        this.controls2 = [
+            {
+                label: 'First name2',
+                valueProperty: 'firstName2',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10,
+                hideBy: [(formControls) => {
+                        if (formControls['firstName1'].value) {
+                            return false;
+                        }
+                        return true;
+                    }]
+            },
+            {
+                label: 'Last Name2',
+                valueProperty: 'lastName2',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10,
+            }
+        ];
+        this.controls3 = [
+            {
+                label: 'First name3',
+                valueProperty: 'user.info.firstName3',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10
+            },
+            {
+                label: 'Last Name3',
+                valueProperty: 'user.info.lastName3',
+                controlType: control_types_1.ControlTypes.TEXTBOX,
+                isRequired: true,
+                minlength: 4,
+                maxLength: 10,
+            }
+        ];
         this.controls = [
             {
                 label: 'First name',
@@ -26,7 +91,7 @@ let AppComponent = class AppComponent {
                 controlType: control_types_1.ControlTypes.TEXTBOX,
                 isRequired: true,
                 minlength: 4,
-                maxLength: 10,
+                maxLength: 10
             },
             {
                 label: 'Last Name',
@@ -53,7 +118,7 @@ let AppComponent = class AppComponent {
                             }
                             return true;
                         }
-                    }]
+                    }],
             },
             {
                 label: 'Email',
@@ -128,15 +193,56 @@ let AppComponent = class AppComponent {
         //                console.log('form data', formData)
         //            })
         this.formData = {
-            formName: 'sampleform',
-            formStyle: FormStyles_1.FormStyles.BOOTSTRAP_HORIZONTAL,
+            name: 'sampleform',
+            formConfig: {
+                type: 'vertical',
+                validationConfig: this.validationConfig
+            },
+            formStyle: FormStyles_1.FormStyles.BOOTSTRAP_VERTICAL,
             theme: FormStyles_1.FormStyles.THEME_BOOTSTRAP,
-            controls: this.controls,
+            layout: {
+                type: 'tab',
+                layoutConfig: { title: '<div class="text-center text-primary"><h3>User Info </h3></div>' },
+                items: [{
+                        "type": "default",
+                        "fileds": this.controls1,
+                        "layoutConfig": {
+                            "title": "Tab 1"
+                        }
+                    },
+                    {
+                        "type": "default",
+                        "fileds": this.controls2,
+                        "layoutConfig": {
+                            "title": "Tab 2"
+                        }
+                    },
+                    {
+                        // "readOnly": true,
+                        enableBy: [(formControls) => {
+                                if (formControls['firstName1'].value) {
+                                    return false;
+                                }
+                                return true;
+                            }],
+                        "type": "default",
+                        "fileds": this.controls3,
+                        "layoutConfig": {
+                            "title": "Tab 3"
+                        },
+                        "nextButtonText": "Complete"
+                    }
+                ]
+            },
+            fileds: this.controls,
             dataObject: this.data,
             cb: (formData) => {
                 console.log('form data', formData);
             }
         };
+        // setTimeout(() => {
+        //     this.formData.layout.items[2].readOnly = false;
+        // }, 10000)
     }
 };
 AppComponent = __decorate([
@@ -144,7 +250,7 @@ AppComponent = __decorate([
         selector: 'my-app',
         template: `
     <div *ngIf="formData">
-    <dynaform [formData]="formData" ></dynaform>
+    <df-bootstrap-form [formData]="formData" ></df-bootstrap-form>
     </div>
 `,
     }),

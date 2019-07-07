@@ -1,0 +1,12 @@
+<div class="col-md-12" *ngIf="enableForm" [formGroup]="dynaForm">
+ 
+  <!-- render requested form style start -->
+  <df-bootstrap-form-default [formConfig]='formData.formConfig' [controls] = "formData.fileds" [dataObject]="formData.dataObject" [dynaForm]="dynaForm"></df-bootstrap-form-default>
+
+  <!-- render requested form style End-->
+   <!-- has layout-->
+   <div *ngIf="formData.layout">
+      <df-default-layout [layout]="formData.layout" [formConfig]="formConfig" [dataObject]="formData.dataObject" [dynaForm]="dynaForm"></df-default-layout>
+    </div>
+    <!-- layout End-->
+</div>

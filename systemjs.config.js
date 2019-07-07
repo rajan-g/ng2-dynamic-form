@@ -7,6 +7,7 @@
   var map = {
     'app':                        'example', // 'dist',
     'dist':                        'dist',
+    'src':                        'src',
     '@angular':                   'node_modules/@angular',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs'
@@ -17,7 +18,8 @@
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
     'directive' : {defaultExtension:'js'},
-    'dist' : {defaultExtension:'js'}
+    'dist' : {defaultExtension:'js'},
+    'src' : {defaultExtension:'js'}
   };
   var ngPackageNames = [
     'common',

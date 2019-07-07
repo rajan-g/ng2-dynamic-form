@@ -1,0 +1,22 @@
+<div class="col-md-12" *ngIf="layout && enableLayout">
+  <div *ngIf="layout.config && layout.layoutConfig.title" [innerHtml]="layout.layoutConfig.title"></div>
+  <ul class="nav nav-tabs" [attr.id]="layout.id+'Tab'">
+    <li  *ngFor="let item of layout.items; let index = index" [ngClass]="{'active':currentActiveTab === index}">
+      <a *ngIf="item.enable" (click)="onTabSelect(index)" class="nav-link1" [attr.id]="item.id+'-tab'"  href="#{{item.id}}" [innerHtml]="item.layoutConfig.title"></a>
+    </li>
+  </ul>
+  <div class="tab-content" [attr.id]="layout.id+'TabContent'">
+    <div *ngFor="let item of layout.items; let index = index" [attr.id]="item.id" role="tabpanel"
+      [attr.aria-labelledby]="item.id+'-tab'" class="tab-pane fade"
+      [ngClass]="{'show active': index === currentActiveTab, 'fade': index !== currentActiveTab}">
+      <div *ngIf="item.enable" [attr.disabled]="item.readOnly">      
+        <button class="btn btn-default" *ngIf="hasPreviousButton && index >0" [innerHTML]="nextButtonText.previousButtonText || previousButtonText" (click)="currentActiveTab = currentActiveTab-1" ></button>
+      <df-bootstrap-form-default [formConfig]='layout.formConfig' [controls]="item.fileds" [dataObject]="dataObject"
+        [dynaForm]="dynaForm"></df-bootstrap-form-default>
+      <df-default-layout *ngIf="item.layout" [layout]="item.layout" [dataObject]="dataObject"
+        [formConfig]="itemitem.formConfig" [dynaForm]="dynaForm"></df-default-layout>
+      <button class="btn btn-primary active" *ngIf="hasNextButton && index < layout.items.length" [innerHTML]="item.nextButtonText || nextButtonText" (click)="next(dynaForm, item, index)" ></button>
+    </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<!-- render requested form style start -->
+<div [ngSwitch]="formConfig.type">
+    <df-bootstrap-form-vertical *ngSwitchCase="'default'" [formConfig]="formConfig" [controls]="controls" [dataObject]="dataObject" [dynaForm]="dynaForm"></df-bootstrap-form-vertical>
+    <df-bootstrap-form-vertical *ngSwitchCase="'vertical'" [formConfig]="formConfig"  [controls]="controls" [dataObject]="dataObject" [dynaForm]="dynaForm"></df-bootstrap-form-vertical>
+</div>
+<!-- render requested form style End-->

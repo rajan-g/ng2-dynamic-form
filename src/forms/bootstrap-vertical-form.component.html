@@ -1,0 +1,30 @@
+<div class="form-horizontal col-md-12" *ngIf="controls && controls.length && dataObject && enable" [formGroup]="dynaForm">
+  <!-- hh -->
+  <!-- Need to derive controls -->
+  <div *ngFor="let control of controls; let index = index">
+    <div [ngClass]="{'row': control.validationConfig && control.validationConfig.possition === 'right'}" *ngIf="control.enable">
+      <div class="form-group"
+        [ngClass]="{'col-md-8': control.validationConfig && control.validationConfig.possition === 'right'}"
+        *ngIf="control.controlType === 'textbox' || control.controlType === 'email' || control.controlType === 'number'|| control.controlType === 'dummy' ">
+        <df-validation-block *ngIf="control.validationConfig && control.validationConfig.possition === 'top'"
+          [self]="control" [dynaForm]="dynaForm"></df-validation-block>
+        <label for="{{control.valueProperty}}" [innerHTML]="control.label"></label>
+        <input type="{{control.controlType}}" [readonly]="control.readOnly" autocomplete="off" class="form-control"
+          placeholder="{{control.placeHolder}}" id="{{control.valueProperty}}" [name]="control.valueProperty"
+          [id]="control.valueProperty" [attr.autocomplete]="control.autocomplete || 'off'"
+          [formControlName]="control.valueProperty" [(ngModel)]="dataObject[control.valueProperty]" >
+        <df-validation-block *ngIf="!control.validationConfig || control.validationConfig.possition === 'bottom'"
+          [self]="control" [dynaForm]="dynaForm"></df-validation-block>
+        <!-- <div class="invalid-feedback">
+        Please provide a valid city.
+      </div> -->
+      </div>
+      <div *ngIf="control.validationConfig && control.validationConfig.possition === 'right'" class="col-md-4">
+        <df-validation-block *ngIf="control.validationConfig || control.validationConfig.possition === 'right'"
+          [self]="control" [dynaForm]="dynaForm"></df-validation-block>
+      </div>
+
+    </div>
+  </div>
+
+</div>

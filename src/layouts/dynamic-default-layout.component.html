@@ -1,0 +1,10 @@
+<div class="col-md-12" *ngIf="layout && enableLayout">
+  <div [ngSwitch]="layout.type">
+    <df-bootstrap-form-vertical *ngSwitchCase="'default'" [controls]="layout.fileds"
+      [dataObject]="dataObject" [formConfig] = "layout.formConfig" [dynaForm]="dynaForm"></df-bootstrap-form-vertical>
+    <df-col-layout *ngSwitchCase="'column'"  [formConfig] = "layout.formConfig" [layout]="layout"  [dataObject]="dataObject"
+      [dynaForm]="dynaForm"></df-col-layout>
+    <df-tab-layout *ngSwitchCase="'tab'"  [formConfig] = "layout.formConfig" [layout]="layout"  [dataObject]="dataObject"
+      [dynaForm]="dynaForm"></df-tab-layout>
+  </div>
+</div>

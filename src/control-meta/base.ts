@@ -4,8 +4,10 @@
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ControlTypes } from './control-types';
+import { LabelConfig, ValidationConfig } from '../configs/configs';
+import { TrilDownBase } from '../layouts/trildown';
 
-export abstract class BaseControl {
+export abstract class BaseControl extends TrilDownBase{
     private _label: string; // name of the control label
     private _placeHolder: string; // placeHolder of the control 
     private _autocomplete: string; // placeHolder of the control 
@@ -31,8 +33,16 @@ export abstract class BaseControl {
     private _controlClassesOnError: any;
     private _lableClassesOnError: any;
     private _formControl: FormControl;
-    private _enable: boolean = false;
+    private _enable: boolean = true;
+    private _helpText: String;
+    private _helpTextClasses: String;
+    private _readOnly: boolean = false;
+    private _labelConfig: LabelConfig;
+    private _validationConfig: ValidationConfig;
     private _isSubmited: boolean = false;
+    _checkedValue:any;
+    _unCheckedValue:any;
+
 
     init(meta: any, util: any, dataObject: Object) {
         this.label = meta['label'];
@@ -58,6 +68,16 @@ export abstract class BaseControl {
         this.controlClasses = meta['controlClasses'];
         this.lableClasses = meta['lableClasses'];
         this.controlClassesOnError = meta['controlClassesOnError'];
+        this.enable = meta['enable'];
+        this.helpText = meta['helpText'];
+        this.helpTextClasses = meta['helpTextClasses'];
+        this.readOnly = meta['readOnly'];
+        this.enableBy = meta['enableBy'];
+        this.readOnlyBy = meta['readOnlyBy'];
+        this.labelConfig = meta['labelConfig'];
+        this.validationConfig = meta['validationConfig'];
+        this.formConfig = meta['formConfig'];
+        this.formGroup = meta['formGroup'];
         //        this.formControl = meta['formControl'];
         this.buildFormControl(util);
     }
@@ -226,6 +246,9 @@ export abstract class BaseControl {
         this._formControl = formControl
     }
     get enable() {
+        if(this.enableBy && this.enableBy.length) {
+            return this.processEnable();
+        }
         return this._enable;
     }
     set enable(enable: boolean) {
@@ -237,6 +260,125 @@ export abstract class BaseControl {
     set isSubmited(isSubmited: boolean) {
         this._isSubmited = isSubmited
     }
+
+    /**
+     * Getter helpText
+     * @return {String}
+     */
+	public get helpText(): String {
+		return this._helpText;
+	}
+
+    /**
+     * Getter helpTextClasses
+     * @return {String}
+     */
+	public get helpTextClasses(): String {
+		return this._helpTextClasses;
+	}
+
+    /**
+     * Getter readOnly
+     * @return {boolean }
+     */
+	public get readOnly(): boolean  {
+        if(this.readOnlyBy && this.readOnlyBy.length) {
+            return this.processReadOnly();
+        }
+		return this._readOnly;
+	}
+
+    /**
+     * Setter helpText
+     * @param {String} value
+     */
+	public set helpText(value: String) {
+		this._helpText = value;
+	}
+
+    /**
+     * Setter helpTextClasses
+     * @param {String} value
+     */
+	public set helpTextClasses(value: String) {
+		this._helpTextClasses = value;
+	}
+
+    /**
+     * Setter readOnly
+     * @param {boolean } value
+     */
+	public set readOnly(value: boolean ) {
+		this._readOnly = value;
+	}
+
+
+    /**
+     * Getter validationConfig
+     * @return {validationConfig}
+     */
+	public get validationConfig(): ValidationConfig {
+		return this._validationConfig;
+	}
+
+    /**
+     * Setter validationConfig
+     * @param {validationConfig} value
+     */
+	public set validationConfig(value: ValidationConfig) {
+		this._validationConfig = value;
+	}
+
+    /**
+     * Getter labelConfig
+     * @return {LabelConfig}
+     */
+	public get labelConfig(): LabelConfig {
+		return this._labelConfig;
+	}
+
+    /**
+     * Setter labelConfig
+     * @param {LabelConfig} value
+     */
+	public set labelConfig(value: LabelConfig) {
+		this._labelConfig = value;
+	}
+
+
+    /**
+     * Getter checkedValue
+     * @return {any}
+     */
+	public get checkedValue(): any {
+		return this._checkedValue;
+	}
+
+    /**
+     * Setter checkedValue
+     * @param {any} value
+     */
+	public set checkedValue(value: any) {
+		this._checkedValue = value;
+	}
+
+    /**
+     * Getter unCheckedValue
+     * @return {any}
+     */
+	public get unCheckedValue(): any {
+		return this._unCheckedValue;
+	}
+
+    /**
+     * Setter unCheckedValue
+     * @param {any} value
+     */
+	public set unCheckedValue(value: any) {
+		this._unCheckedValue = value;
+	}
+
+    
     buildFormControl(util: any) {
         let validatorsList: any = [];
         let validatorFnList: any = [];

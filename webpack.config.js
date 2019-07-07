@@ -1,9 +1,9 @@
 var path = require('path');
 
 module.exports = {
-  entry: "./src/dynaform.module.ts",
+  entry: "./src/dynamicform.module.ts",
   output: {
-    filename: "./dist/dynaform.module.bundle.js"
+    filename: "./dist/dynamicform.module.bundle.js"
   },
   devtool: 'source-map',
 

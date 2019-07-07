@@ -5,11 +5,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const forms_1 = require("@angular/forms");
 const control_types_1 = require("./control-types");
-class BaseControl {
+const trildown_1 = require("../layouts/trildown");
+class BaseControl extends trildown_1.TrilDownBase {
     constructor() {
+        super(...arguments);
         this._minLength = -1;
         this._min = -1;
-        this._enable = false;
+        this._enable = true;
+        this._readOnly = false;
         this._isSubmited = false;
     }
     init(meta, util, dataObject) {
@@ -36,6 +39,16 @@ class BaseControl {
         this.controlClasses = meta['controlClasses'];
         this.lableClasses = meta['lableClasses'];
         this.controlClassesOnError = meta['controlClassesOnError'];
+        this.enable = meta['enable'];
+        this.helpText = meta['helpText'];
+        this.helpTextClasses = meta['helpTextClasses'];
+        this.readOnly = meta['readOnly'];
+        this.enableBy = meta['enableBy'];
+        this.readOnlyBy = meta['readOnlyBy'];
+        this.labelConfig = meta['labelConfig'];
+        this.validationConfig = meta['validationConfig'];
+        this.formConfig = meta['formConfig'];
+        this.formGroup = meta['formGroup'];
         //        this.formControl = meta['formControl'];
         this.buildFormControl(util);
     }
@@ -196,6 +209,9 @@ class BaseControl {
         this._formControl = formControl;
     }
     get enable() {
+        if (this.enableBy && this.enableBy.length) {
+            return this.processEnable();
+        }
         return this._enable;
     }
     set enable(enable) {
@@ -206,6 +222,107 @@ class BaseControl {
     }
     set isSubmited(isSubmited) {
         this._isSubmited = isSubmited;
+    }
+    /**
+     * Getter helpText
+     * @return {String}
+     */
+    get helpText() {
+        return this._helpText;
+    }
+    /**
+     * Getter helpTextClasses
+     * @return {String}
+     */
+    get helpTextClasses() {
+        return this._helpTextClasses;
+    }
+    /**
+     * Getter readOnly
+     * @return {boolean }
+     */
+    get readOnly() {
+        if (this.readOnlyBy && this.readOnlyBy.length) {
+            return this.processReadOnly();
+        }
+        return this._readOnly;
+    }
+    /**
+     * Setter helpText
+     * @param {String} value
+     */
+    set helpText(value) {
+        this._helpText = value;
+    }
+    /**
+     * Setter helpTextClasses
+     * @param {String} value
+     */
+    set helpTextClasses(value) {
+        this._helpTextClasses = value;
+    }
+    /**
+     * Setter readOnly
+     * @param {boolean } value
+     */
+    set readOnly(value) {
+        this._readOnly = value;
+    }
+    /**
+     * Getter validationConfig
+     * @return {validationConfig}
+     */
+    get validationConfig() {
+        return this._validationConfig;
+    }
+    /**
+     * Setter validationConfig
+     * @param {validationConfig} value
+     */
+    set validationConfig(value) {
+        this._validationConfig = value;
+    }
+    /**
+     * Getter labelConfig
+     * @return {LabelConfig}
+     */
+    get labelConfig() {
+        return this._labelConfig;
+    }
+    /**
+     * Setter labelConfig
+     * @param {LabelConfig} value
+     */
+    set labelConfig(value) {
+        this._labelConfig = value;
+    }
+    /**
+     * Getter checkedValue
+     * @return {any}
+     */
+    get checkedValue() {
+        return this._checkedValue;
+    }
+    /**
+     * Setter checkedValue
+     * @param {any} value
+     */
+    set checkedValue(value) {
+        this._checkedValue = value;
+    }
+    /**
+     * Getter unCheckedValue
+     * @return {any}
+     */
+    get unCheckedValue() {
+        return this._unCheckedValue;
+    }
+    /**
+     * Setter unCheckedValue
+     * @param {any} value
+     */
+    set unCheckedValue(value) {
+        this._unCheckedValue = value;
     }
     buildFormControl(util) {
         let validatorsList = [];

@@ -1,0 +1,38 @@
+<div *ngIf="enableForm" [ngClass]="{'col-sm-12': formData.theme === 'bootstrap'}">
+    <form [formGroup]="dynaForm" [ngClass]="{'form-inline': !formData.formStyle || formData.formStyle ==='bootstrap_inline', 'form-horizontal' : formData.formStyle ==='bootstrap_horizontal' }">
+        <div *ngFor="let control of formData.controls" [ngSwitch]="control.controlType">
+            <div *ngIf="control.enable" [formGroup]="dynaForm" [ngClass]="{'has-error':control[valueProperty] && !control[valueProperty].valid && control[valueProperty].touched}">
+                <div class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_vertical' || utilInfos.formStyle === 'bootstrap_inline'">
+                    <text-box *ngSwitchCase="'textbox'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util" [dataObject]="formData.dataObject"></text-box>
+                    <email-ctl *ngSwitchCase="'email'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util" [dataObject]="formData.dataObject"></email-ctl>
+                    <number-box *ngSwitchCase="'number'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util"
+                        [dataObject]="formData.dataObject"></number-box>
+                    <check-box *ngSwitchCase="'checkbox'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util"
+                        [dataObject]="formData.dataObject"></check-box>
+                    <radio-ctl *ngSwitchCase="'radio'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util" [dataObject]="formData.dataObject"></radio-ctl>
+                    <select-ctl *ngSwitchCase="'select'" [controlmeta]="control" [dynaForm]="dynaForm" [utilInfos]="utilInfos" [util]="util"
+                        [dataObject]="formData.dataObject"></select-ctl>
+                    <!-- <label  [attr.for]="valueProperty">{{label}}</label>
+                    <input class="form-control" placeholder="{{placeHolder}}" type="text" [name]= "valueProperty"  [id]= "valueProperty" [attr.autocomplete]="autocomplete" [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]"> -->
+                    <dyna-validation-block [self]="self"></dyna-validation-block>
+                </div>
+                <div class="form-group" *ngIf="utilInfos.formStyle === 'bootstrap_horizontal'">
+                    <label class="control-label col-sm-2" [attr.for]="valueProperty">{{control.label}}</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" placeholder="{{placeHolder}}" type="text" [name]="valueProperty" [id]="valueProperty" [attr.autocomplete]="autocomplete"
+                            [formControlName]="valueProperty" [(ngModel)]="dataObject[valueProperty]">
+                        <!-- <dyna-validation-block [self]="self"></dyna-validation-block> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="formData.formStyle ==='bootstrap_vertical' ">
+            <button (click)="sendResult()" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="form-group" *ngIf="formData.formStyle ==='bootstrap_horizontal' ">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button (click)="sendResult()" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
