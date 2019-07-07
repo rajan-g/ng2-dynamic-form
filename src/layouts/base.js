@@ -13,17 +13,6 @@ class BaseLayout extends nextandprevious_1.NextandPrevious {
             this[key] = obj[key];
         }
     }
-    // constructor(form:FormBuilder, data:any, ) {
-    //     super();
-    // let fileds = this.fileds;
-    // for(let i=0; i< fileds.length; i++) {
-    //    let item = fileds[i];
-    //    switch(item.controlType) {
-    //      case 'text': 
-    //      fileds[i] = new TextControl(item, form, data);
-    //    }
-    // }
-    // }
     /**
      * Getter type
      * @return {LAYOUTS }

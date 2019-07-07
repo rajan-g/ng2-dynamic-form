@@ -4,6 +4,7 @@ export class FormConfig {
   private _labelConfig: LabelConfig;
   private _validationConfig: ValidationConfig;
   private _controls: any;
+  private _getResult:Function;
 
   /**
    * Getter type
@@ -67,6 +68,22 @@ export class FormConfig {
      */
 	public set controls(value: any) {
 		this._controls = value;
+	}
+
+    /**
+     * Getter getResult
+     * @return {Function}
+     */
+	public get getResult(): Function {
+		return this._getResult;
+	}
+
+    /**
+     * Setter getResult
+     * @param {Function} value
+     */
+	public set getResult(value: Function) {
+		this._getResult = value;
 	}
 
 

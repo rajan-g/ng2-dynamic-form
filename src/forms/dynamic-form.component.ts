@@ -83,7 +83,7 @@ export class DynamicForm extends BaseForm {
             }
             if(!layout.formConfig) {
                 item.formConfig = this.formData.formConfig;
-            }
+            } 
             if(!item.layoutConfig) {
                 item.layoutConfig = new LayoutConfig();
             }
@@ -122,7 +122,9 @@ export class DynamicForm extends BaseForm {
       this.setCheckBoxValue();    
       // this.setSelectBoxValues();  //TODO
       this.composeResultData();
-      this.formData.callBack(this.originalInputData);
+      if(this.formData.callBack) {
+        this.formData.callBack(this.originalInputData);
+      }
   }
   
   isRadiosValid() {

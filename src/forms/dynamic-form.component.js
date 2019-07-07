@@ -122,7 +122,9 @@ let DynamicForm = class DynamicForm extends base_1.BaseForm {
         this.setCheckBoxValue();
         // this.setSelectBoxValues();  //TODO
         this.composeResultData();
-        this.formData.callBack(this.originalInputData);
+        if (this.formData.callBack) {
+            this.formData.callBack(this.originalInputData);
+        }
     }
     isRadiosValid() {
         for (let i = 0; i < this.formData.fileds.length; i++) {

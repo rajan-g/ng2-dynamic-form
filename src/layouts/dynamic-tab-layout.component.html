@@ -9,8 +9,8 @@
     <div *ngFor="let item of layout.items; let index = index" [attr.id]="item.id" role="tabpanel"
       [attr.aria-labelledby]="item.id+'-tab'" class="tab-pane fade"
       [ngClass]="{'show active': index === currentActiveTab, 'fade': index !== currentActiveTab}">
-      <div *ngIf="item.enable" [attr.disabled]="item.readOnly">      
-        <button class="btn btn-default" *ngIf="hasPreviousButton && index >0" [innerHTML]="nextButtonText.previousButtonText || previousButtonText" (click)="currentActiveTab = currentActiveTab-1" ></button>
+      <div [hidden]="!item.enable" [attr.disabled]="item.readOnly">      
+        <button class="btn btn-default" *ngIf="hasPreviousButton && index >0" [innerHTML]="nextButtonText.previousButtonText || previousButtonText" (click)="activatePrevious(index)" ></button>
       <df-bootstrap-form-default [formConfig]='layout.formConfig' [controls]="item.fileds" [dataObject]="dataObject"
         [dynaForm]="dynaForm"></df-bootstrap-form-default>
       <df-default-layout *ngIf="item.layout" [layout]="item.layout" [dataObject]="dataObject"

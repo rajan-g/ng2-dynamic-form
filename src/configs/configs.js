@@ -60,6 +60,20 @@ class FormConfig {
     set controls(value) {
         this._controls = value;
     }
+    /**
+     * Getter getResult
+     * @return {Function}
+     */
+    get getResult() {
+        return this._getResult;
+    }
+    /**
+     * Setter getResult
+     * @param {Function} value
+     */
+    set getResult(value) {
+        this._getResult = value;
+    }
 }
 exports.FormConfig = FormConfig;
 class LabelConfig {

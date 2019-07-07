@@ -8,6 +8,7 @@ import { FormStyles } from '../dist/control-meta/FormStyles';
 import { ControlTypes } from '../dist/control-meta/control-types';
 import { ValidationConfig, ValidationPosition } from '../src/configs/configs';
 import { BaseLayout } from '../src/layouts/base';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'my-app',
@@ -219,6 +220,9 @@ export class AppComponent {
             layout: {
                 type: 'tab',
                 layoutConfig: {title: '<div class="text-center text-primary"><h3>User Info </h3></div>'},
+                onSubmit: (formGroup: FormGroup) => {
+                    console.info(formGroup);
+                },
                 items: [{
                     "type": "default",  // it can be column, pannel, tab, accordion, steps
                     "fileds":this.controls1, //you can use reference name of global form or you can derrive new,
@@ -237,9 +241,9 @@ export class AppComponent {
                     // "readOnly": true,
                     enableBy: [(formControls: any) => {
                         if(formControls['firstName1'].value) {
-                        return false;
-                        }
                         return true;
+                        }
+                        return false;
                     }],
                     "type": "default",  // it can be column, pannel, tab, accordion, steps
                     "fileds":this.controls3, //you can use reference name of global form or you can derrive new,

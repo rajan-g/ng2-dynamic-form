@@ -11,9 +11,43 @@ class NextandPrevious extends trildown_1.TrilDownBase {
     }
     next(dynaForm, item, index) {
         if (this.isValid(dynaForm, item)) {
+            this.buttonClick(index);
             if (this.hasOwnProperty('_currentActiveTab')) {
-                this['currentActiveTab'] = this['currentActiveTab'] + 1;
+                let current = -1;
+                let items = this['layout']['items'];
+                for (let i = index + 1; i < items.length; i++) {
+                    if (items[i].enable) {
+                        current = i;
+                        break;
+                    }
+                }
+                if (current != -1) {
+                    this['currentActiveTab'] = current;
+                }
             }
+        }
+    }
+    activatePrevious(index) {
+        if (this.hasOwnProperty('_currentActiveTab')) {
+            let current = -1;
+            let items = this['layout']['items'];
+            for (let i = index - 1; i >= 0; i--) {
+                if (items.enable) {
+                    current = i;
+                    break;
+                }
+            }
+            if (current != -1) {
+                this['currentActiveTab'] = current;
+            }
+        }
+    }
+    buttonClick(index) {
+        if (this['layout']['items'][index].onSubmit) {
+            this['layout']['items'][index].onSubmit(this['layout'].formGroup);
+        }
+        if (this['layout'].onSubmit) {
+            this['layout'].onSubmit(this['layout'].formGroup);
         }
     }
     isValid(dynaForm, item) {

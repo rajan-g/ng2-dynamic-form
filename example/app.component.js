@@ -203,6 +203,9 @@ let AppComponent = class AppComponent {
             layout: {
                 type: 'tab',
                 layoutConfig: { title: '<div class="text-center text-primary"><h3>User Info </h3></div>' },
+                onSubmit: (formGroup) => {
+                    console.info(formGroup);
+                },
                 items: [{
                         "type": "default",
                         "fileds": this.controls1,
@@ -221,9 +224,9 @@ let AppComponent = class AppComponent {
                         // "readOnly": true,
                         enableBy: [(formControls) => {
                                 if (formControls['firstName1'].value) {
-                                    return false;
+                                    return true;
                                 }
-                                return true;
+                                return false;
                             }],
                         "type": "default",
                         "fileds": this.controls3,
